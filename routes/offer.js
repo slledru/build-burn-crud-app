@@ -13,17 +13,48 @@ router.get('/', (req, res, next) => {
 
 // GET a single offer
 router.get('/:id', (req, res, next) => {
-  res.send('GET a single offer')
+  const { id } = req.params
+  knex('offer')
+    .select('name')
+    .where('id', id)
+    .then((rows) => {
+      if (rows.length > 0) {
+        res.json(rows)
+      }
+      else {
+        res.sendStatus(404)
+      }
+    })
 })
 
 // POST a new offer
 router.post('/', (req, res, next) => {
-  res.send('POST a new offer')
+  const { name } = req.body
+  knex('offer')
+    .insert([
+      { name: name }
+    ])
+    .returning('id')
+    .then((rows) => {
+      res.status(201).json(rows)
+    })
 })
 
 // DELETE an offer
 router.delete('/:id', (req, res, next) => {
-  res.send('DELETE an offer')
+  const { id } = req.params
+  knex('offer')
+    .del()
+    .where('id', id)
+    .returning('id')
+    .then((rows) => {
+      if (rows.length > 0) {
+        res.json(rows)
+      }
+      else {
+        res.sendStatus(404)
+      }
+    })
 })
 
 // UPDATE an offer
