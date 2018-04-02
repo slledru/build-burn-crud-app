@@ -43,6 +43,7 @@ router.post('/', (req, res, next) => {
 // DELETE an offer
 router.delete('/:id', (req, res, next) => {
   const { id } = req.params
+
   knex('offer')
     .del()
     .where('id', id)
@@ -59,7 +60,21 @@ router.delete('/:id', (req, res, next) => {
 
 // UPDATE an offer
 router.patch('/:id', (req, res, next) => {
-  res.send('PATCH an offer')
+  const { id } = req.params
+  const { name } = req.body
+
+  knex('offer')
+    .update({ name: name})
+    .where('id', id)
+    .returning('*')
+    .then((rows) => {
+      if (rows.length > 0) {
+        res.json(rows)
+      }
+      else {
+        res.sendStatus(404)
+      }
+    })
 })
 
 module.exports = router
