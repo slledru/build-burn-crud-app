@@ -1,9 +1,14 @@
 const express = require('express')
 const router = express.Router()
+const knex = require('../knex')
 
 /* GET all offers. */
 router.get('/', (req, res, next) => {
-  res.send('Get all offers')
+  // res.send('Get all offers')
+  // select name from offer;
+  knex('offer')
+    .select('name')
+    .then((rows) => res.json(rows))
 })
 
 // GET a single offer
