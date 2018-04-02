@@ -8,7 +8,7 @@ router.get('/', (req, res, next) => {
 
 // GET a single offer
 router.get('/:id', (req, res, next) => {
-  res.send('GET a single off')
+  res.send('GET a single offer')
 })
 
 // POST a new offer
